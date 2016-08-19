@@ -1,20 +1,30 @@
-var Injectable =  require("angular2/core").Injectable;
+var {HEROES} = require('./mock-heroes');
+var {Injectable} =  require("@angular/core");
 
-var HEROES = require('./mock-heroes').HEROES;
+class HeroService {
+    getHeroes () {
+        return Promise.resolve(HEROES);
+    }
+    // See the "Take it slow" appendix
+    getHeroesSlowly () {
+        return new Promise(resolve =>
+            setTimeout(() => resolve(HEROES), 2000) // 2 seconds
+        );
+    }
+    getHero (id) {
+        return this.getHeroes()
+                .then(heroes => heroes.find(hero => hero.id === id));
+    }
+}
 
-exports.HeroService = function () {};
-
-exports.HeroService.annotations = [
+HeroService.annotations = [
     new Injectable()
 ];
-exports.HeroService.prototype = {
-    getHeroes: function() {
-        return Promise.resolve(HEROES);
-    },
-    getHeroesSlowly: function() {
-         return new Promise((resolve) =>  setTimeout(resolve, 2000, HEROES));
-     },
-    getHero: function (id) {
-        return  Promise.resolve(HEROES.filter((hero) => hero.id === id)[0]);
-    }
-};
+
+exports.HeroService = HeroService;
+
+/*
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

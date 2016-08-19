@@ -1,4 +1,12 @@
-var bootstrap =  require("angular2/platform/browser").bootstrap;
-var AppComponent = require('./app.component').AppComponent;
+// main entry point
+var {platformBrowserDynamic} = require("@angular/platform-browser-dynamic");
+var {AppModule} = require("./app.module");
 
-bootstrap(AppComponent);
+platformBrowserDynamic().bootstrapModule(AppModule);
+
+
+/*
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

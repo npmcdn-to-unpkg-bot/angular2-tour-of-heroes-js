@@ -1,28 +1,36 @@
-var Component =  require("angular2/core").Component;
-var Router =  require("angular2/router").Router;
+var {Component} = require("@angular/core");
+var {Router} =  require("@angular/router");
 
-var HeroService = require('./hero.service').HeroService;
+var {HeroService} = require('./hero.service');
 
-exports.DashboardComponent =  function (_router, _heroService) {
-    this._router = _router;
-    this._heroService = _heroService;
-};
+class DashboardComponent {
+    constructor (router, heroService) {
+        this.router = router;
+        this.heroService = heroService;
+    }
+    ngOnInit () {
+        this.heroService.getHeroes()
+           .then(heroes => this.heroes = heroes.slice(1, 5));
+    }
+    gotoDetail (hero) {
+        let link = ['/detail', hero.id];
+        this.router.navigate(link);
+    }
+}
 
-exports.DashboardComponent.parameters = [Router, HeroService];
-exports.DashboardComponent.annotations = [
+DashboardComponent.parameters = [Router, HeroService];
+DashboardComponent.annotations = [
      new Component({
             selector: 'my-dashboard',
-            templateUrl: "app/dashboard.component.html",
-            styleUrls: ["app/dashboard.component.css"],
+            templateUrl: 'app/dashboard.component.html',
+            styleUrls: ['app/dashboard.component.css']
         })
 ];
 
-exports.DashboardComponent.prototype = {
-    ngOnInit: function() {
-        this._heroService.getHeroes().then(heroes => this.heroes = heroes.slice(1,5));
-    },
-   gotoDetail: function(hero) {
-        var link = ['HeroDetail', { id: hero.id }];
-        this._router.navigate(link);
-    }
-};
+exports.DashboardComponent =  DashboardComponent; 
+
+/*
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

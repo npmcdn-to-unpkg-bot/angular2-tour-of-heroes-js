@@ -1,35 +1,31 @@
-var Component =  require("angular2/core").Component;
-var RouteConfig =  require("angular2/router").RouteConfig;
-var ROUTER_DIRECTIVES =  require("angular2/router").ROUTER_DIRECTIVES;
-var ROUTER_PROVIDERS =  require("angular2/router").ROUTER_PROVIDERS;
+var {Component} = require("@angular/core");
 
-var DashboardComponent = require('./dashboard.component').DashboardComponent;
-var HeroesComponent = require('./heroes.component').HeroesComponent;
-var HeroDetailComponent = require('./hero-detail.component').HeroDetailComponent;
-var HeroService = require('./hero.service').HeroService;
+class AppComponent {
+    // ES6中class不存在属性
+    // title = 'Tour of Heroes'; // ES7
+    get title(){return 'Tour of Heroes';}
+}
 
-exports.AppComponent = function () {
-        this.title = 'Tour of Heroes';
-};
-
-exports.AppComponent.annotations = [
-    new Component({ 
-        selector: 'my-app',
-        template: `
-            <h1>{{title}}</h1>
-            <nav>
-              <a [routerLink]="['Dashboard']">Dashboard</a>
-              <a [routerLink]="['Heroes']">Heroes</a>
-            </nav>
-            <router-outlet></router-outlet>
-        `,
-        styleUrls: ['app/app.component.css'],
-        directives: [ROUTER_DIRECTIVES],
-        providers: [ROUTER_PROVIDERS, HeroService]
-    }), 
-    new RouteConfig([
-        {path: '/dashboard', name: 'Dashboard', component: DashboardComponent, useAsDefault: true },
-        {path: '/detail/:id', name: 'HeroDetail', component: HeroDetailComponent },
-        {path: '/heroes', name: 'Heroes', component: HeroesComponent}
-    ])
+// ES6不支持注解 annotations
+AppComponent.annotations = [
+     new Component({
+            selector: 'my-app',
+            template: `
+                <h1>{{title}}</h1>
+                <nav>
+                  <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+                  <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
+                </nav>
+                <router-outlet></router-outlet>
+            `,
+            styleUrls: ['app/app.component.css'],
+          })
 ];
+
+exports.AppComponent =  AppComponent;
+
+/*
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

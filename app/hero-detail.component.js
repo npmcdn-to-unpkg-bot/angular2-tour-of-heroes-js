@@ -1,28 +1,40 @@
-var Component =  require("angular2/core").Component;
-var RouteParams =  require("angular2/router").RouteParams;
-var HeroService = require('./hero.service').HeroService;
+var {Component} =  require("@angular/core");
+var {ActivatedRoute, Params} =  require("@angular/router");
 
-exports.HeroDetailComponent = function (_routeParams, _heroService) {
-    this._routeParams = _routeParams;
-    this._heroService = _heroService;
-};
+var {HeroService} = require('./hero.service');
 
-exports.HeroDetailComponent.parameters = [RouteParams, HeroService];
-exports.HeroDetailComponent.annotations = [
-    new   Component({
-        selector: 'my-hero-detail',
-        inputs: ['hero'],
-        templateUrl: "app/hero-detail.component.html",
-        styleUrls: ["app/hero-detail.component.css"],
+class HeroDetailComponent {
+    constructor (heroService, route) {
+        this.heroService = heroService;
+        this.route = route;
+    }
+    ngOnInit () {
+      this.route.params.forEach((params) => {
+          let id = +params['id'];
+          this.heroService.getHero(id)
+              .then(hero => this.hero = hero);
+      });
+    }
+    goBack () {
+        window.history.back();
+    }
+}
+
+HeroDetailComponent.parameters = [HeroService, ActivatedRoute];
+HeroDetailComponent.annotations = [
+    new Component({
+          selector: 'my-hero-detail',
+          templateUrl: 'app/hero-detail.component.html',
+          styleUrls: ['app/hero-detail.component.css']
     })
 ];
 
-exports.HeroDetailComponent.prototype = {
-    ngOnInit: function() {
-          var id = +this._routeParams.get('id');
-          this._heroService.getHero(id).then(hero => this.hero = hero);
-    },
-    goBack: function() {
-        window.history.back();
-    }
-};
+
+exports.HeroDetailComponent = HeroDetailComponent ;
+
+
+/*
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/
